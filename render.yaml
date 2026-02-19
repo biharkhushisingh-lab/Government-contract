@@ -1,0 +1,64 @@
+databases:
+  - name: gov-contractor-db
+    plan: free
+    databaseName: gov_contractor_db
+    user: gov_user
+
+services:
+  # ─── Node.js Backend ────────────────────────────────────────────────────────
+  - type: web
+    name: gov-backend
+    runtime: node
+    rootDir: Government-contract/backend
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5000
+      - key: DB_HOST
+        fromDatabase:
+          name: gov-contractor-db
+          property: host
+      - key: DB_PORT
+        fromDatabase:
+          name: gov-contractor-db
+          property: port
+      - key: DB_USER
+        fromDatabase:
+          name: gov-contractor-db
+          property: user
+      - key: DB_PASS
+        fromDatabase:
+          name: gov-contractor-db
+          property: password
+      - key: DB_NAME
+        fromDatabase:
+          name: gov-contractor-db
+          property: database
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_EXPIRES_IN
+        value: 30m
+      - key: JWT_REFRESH_EXPIRES_IN
+        value: 7d
+      - key: BCRYPT_ROUNDS
+        value: 10
+      - key: AI_SERVICE_URL
+        value: https://gov-ai-service.onrender.com
+      - key: BLOCKCHAIN_RPC_URL
+        value: ""
+      - key: CORS_ORIGIN
+        value: https://gov-frontend.vercel.app
+
+  # ─── FastAPI AI Service ──────────────────────────────────────────────────────
+  - type: web
+    name: gov-ai-service
+    runtime: docker
+    rootDir: Government-contract/ai-service
+    plan: free
+    healthCheckPath: /
+    dockerfilePath: Government-contract/ai-service/Dockerfile

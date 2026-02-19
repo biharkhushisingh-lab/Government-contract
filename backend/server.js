@@ -7,19 +7,27 @@ let server;
 
 const { initCronJobs } = require('./src/jobs/cron');
 
-// sequelize.authenticate().then(() => {
-//     logger.info('Connected to PostgreSQL');
+const startServer = () => {
+    server = app.listen(config.port, () => {
+        logger.info(`Listening to port ${config.port}`);
+    });
+};
 
-//     // Initialize Background Jobs
-//     // initCronJobs();
-
-server = app.listen(config.port, () => {
-    logger.info(`Listening to port ${config.port}`);
-    logger.info(`Running in EXPERIMENTAL MODE (File DB)`);
-});
-// }).catch((err) => {
-//     logger.error('Unable to connect to database:', err);
-// });
+// Try to connect to PostgreSQL; fall back to file DB mode in development
+sequelize.authenticate()
+    .then(() => {
+        logger.info('Connected to PostgreSQL database');
+        startServer();
+    })
+    .catch((err) => {
+        if (config.env === 'production') {
+            logger.error('Unable to connect to database — exiting:', err);
+            process.exit(1);
+        } else {
+            logger.warn('PostgreSQL unavailable, starting in file-DB mode:', err.message);
+            startServer();
+        }
+    });
 
 const exitHandler = () => {
     if (server) {
