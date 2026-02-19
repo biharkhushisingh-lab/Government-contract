@@ -9,7 +9,7 @@ services:
   - type: web
     name: gov-backend
     runtime: node
-    rootDir: Government-contract/backend
+    rootDir: backend
     plan: free
     buildCommand: npm install
     startCommand: node server.js
@@ -58,7 +58,7 @@ services:
   - type: web
     name: gov-ai-service
     runtime: docker
-    rootDir: Government-contract/ai-service
+    rootDir: ai-service
     plan: free
+    dockerfilePath: ./Dockerfile
     healthCheckPath: /
-    dockerfilePath: Government-contract/ai-service/Dockerfile
