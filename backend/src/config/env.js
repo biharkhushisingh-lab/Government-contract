@@ -19,9 +19,9 @@ const envVarsSchema = joi.object().keys({
     JWT_REFRESH_EXPIRES_IN: joi.string().default('7d').description('refresh token expiration'),
     BCRYPT_ROUNDS: joi.number().default(10).description('bcrypt salt rounds'),
     AI_SERVICE_URL: joi.string().required().description('AI Service URL'),
-    BLOCKCHAIN_RPC_URL: joi.string().default('').description('Blockchain RPC URL'),
-    GOV_PRIVATE_KEY: joi.string().default('').description('Government Wallet Private Key'),
-    CONTRACT_ADDRESS: joi.string().default('').description('Smart Contract Address'),
+    BLOCKCHAIN_RPC_URL: joi.string().allow('').default('').description('Blockchain RPC URL'),
+    GOV_PRIVATE_KEY: joi.string().allow('').default('').description('Government Wallet Private Key'),
+    CONTRACT_ADDRESS: joi.string().allow('').default('').description('Smart Contract Address'),
     CORS_ORIGIN: joi.string().default('http://localhost:3000').description('CORS allowed origin'),
 }).unknown();
 

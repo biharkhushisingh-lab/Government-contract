@@ -48,9 +48,7 @@ services:
       - key: BCRYPT_ROUNDS
         value: 10
       - key: AI_SERVICE_URL
-        value: https://gov-ai-service.onrender.com
-      - key: BLOCKCHAIN_RPC_URL
-        value: ""
+        value: https://gov-ai-service-latest.onrender.com
       - key: CORS_ORIGIN
         value: https://gov-frontend.vercel.app
 
